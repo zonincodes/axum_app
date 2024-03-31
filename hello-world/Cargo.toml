@@ -17,3 +17,4 @@ sqlx = { features = ["runtime-tokio-rustls", "postgres", "time", "uuid"] }
 
 # Auxilliary crates
 anyhow = "1.0.58"
+colored = "2.1.0"

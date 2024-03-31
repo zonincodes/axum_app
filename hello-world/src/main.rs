@@ -10,6 +10,8 @@ use serde::{Deserialize, Serialize};
 use serde_json::json;
 use sqlx::{postgres::{PgPoolOptions, PgRow}, PgPool, Row};
 use std::env;
+use colored::Colorize;
+
 // user
 #[derive(Serialize, Deserialize)]
 struct User {
@@ -165,7 +167,7 @@ async fn main() {
         .route("/db-user", post(create_user_db))
         .layer(Extension(pool));
     tracing::debug!("listening on {}", listener.local_addr().unwrap());
-    println!("Listening on {}", listener.local_addr().unwrap());
+    println!("Listening on {}", "0.0.0.0:3000".purple());
     axum::serve(listener, app).await.unwrap();
 }
 

@@ -8,7 +8,7 @@ use axum::{
 };
 use serde::{Deserialize, Serialize};
 use serde_json::json;
-use sqlx::{postgres::{PgPoolOptions, PgRow}, PgPool, Row};
+use sqlx::{postgres::PgPoolOptions, PgPool, Row};
 use std::env;
 use colored::Colorize;
 
@@ -20,10 +20,7 @@ struct User {
     email: String,
 }
 
-struct Roww {
-    id: i64,
-    user: Json<User>,
-}
+
 
 // A struct for the JSON body
 #[derive(Deserialize)]
@@ -155,7 +152,7 @@ async fn main() {
         .await
         .expect("Failed to connnect");
 
-    let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();
+    let listener = tokio::net::TcpListener::bind("0.0.0.0:8080").await.unwrap();
     let app = Router::new()
         .route("/", get(index))
         .route("/user", post(add_user))
@@ -166,6 +163,7 @@ async fn main() {
         .route("/user-get", get(get_users))
         .route("/db-user", post(create_user_db))
         .layer(Extension(pool));
+
     tracing::debug!("listening on {}", listener.local_addr().unwrap());
     println!("Listening on {}", "0.0.0.0:3000".purple());
     axum::serve(listener, app).await.unwrap();
